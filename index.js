@@ -1,12 +1,11 @@
 
-       let CLIENT_ID = '766289214073-tg4kbrjsvhtk2jsmamd27s0640ggln1p.apps.googleusercontent.com';
+      let CLIENT_ID = '766289214073-tg4kbrjsvhtk2jsmamd27s0640ggln1p.apps.googleusercontent.com';
       let API_KEY = 'AIzaSyCgAbjlBlGbLpnX7nj8uJriBnlQbW7BGxg';
 
       // Array of API discovery doc URLs for APIs used by the quickstart
       let DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest"];
 
-      // Authorization scopes required by the API; multiple scopes can be
-      // included, separated by spaces.
+    
       let SCOPES = 'https://www.googleapis.com/auth/gmail.readonly';
       
 
@@ -15,17 +14,12 @@
       let container = document.getElementById("inboxDiv")
       let containerParent = container.parentNode.nodeName; // This is the parent  of container
     console.log(containerParent)
-      /**
-       *  On load, called to load the auth2 library and API client library.
-       */
+    
       function handleClientLoad() {
         gapi.load('client:auth2', initClient);
       }
 
-      /**
-       *  Initializes the API client library and sets up sign-in state
-       *  listeners.
-       */
+
       function initClient() {
         gapi.client.init({
           apiKey: API_KEY,
@@ -33,10 +27,9 @@
           discoveryDocs: DISCOVERY_DOCS,
           scope: SCOPES
         }).then(function () {
-          // Listen for sign-in state changes.
+          
           gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
 
-          // Handle the initial sign-in state.
           updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
           authorizeButton.onclick = handleAuthClick;
           signoutButton.onclick = handleSignoutClick;
@@ -45,10 +38,7 @@
         });
       }
 
-      /**
-       *  Called when the signed in status changes, to update the UI
-       *  appropriately. After a sign-in, the API is called.
-       */
+     
       function updateSigninStatus(isSignedIn) {
         if (isSignedIn) {
           authorizeButton.style.display = 'none';
@@ -66,17 +56,10 @@
 
         }
       }
-
-      /**
-       *  Sign in the user upon button click.
-       */
       function handleAuthClick(event) {
         gapi.auth2.getAuthInstance().signIn();
       }
 
-      /**
-       *  Sign out the user upon button click.
-       */
       function handleSignoutClick(event) {
         gapi.auth2.getAuthInstance().signOut();
       }
@@ -99,7 +82,7 @@
 
       async function listLabels() {
           
-          //To display the inbox layout
+      
          mailBox();
           let responseA = await gapi.client.gmail.users.messages.list({
               'userId': 'me',
@@ -111,6 +94,7 @@
                   'userId': 'me',
                   'id' : responseA.result.messages[i].id
               })
+              console.log(responseB )
               mails.push(responseB.result);
               }
           addEmails();
@@ -137,7 +121,8 @@
       
       //To design the mail box table
       let inboxTable = document.createElement('table');
-      inboxTable.setAttribute('class','table');
+      //inboxTable.setAttribute('class','table');
+      inboxTable.classList.add("table", "table-dark","table-hover")
       
       let tableHead = document.createElement('thead');
       tableHead.setAttribute('class','thead-light');
@@ -220,16 +205,20 @@
       
           document.getElementById('tableBody').innerHTML = '';
           let me = getHeader(mails[0].payload.headers, 'To');
-          document.getElementById('helloP').innerHTML = 'Welcome, ' + me;
+          document.getElementById('helloP').innerHTML = 'Hello, ' + me;
       
           let data = pagination(state.querySet,state.page,state.rows);
       
           for(let i=0;i<data.querySet.length;i++){
       
-              let serialNoA = (state.page - 1) * state.rows + i + 1;
-              let fromA = getHeader(data.querySet[i].payload.headers, 'From');
-              let subjectA = getHeader(data.querySet[i].payload.headers, 'Subject');
-              let dateA = getHeader(data.querySet[i].payload.headers, 'Date').substring(5,16);
+              let rank = (state.page - 1) * state.rows + i + 1;
+              let from = getHeader(data.querySet[i].payload.headers, 'From');
+              let fromMail = getHeader(data.querySet[i].payload.headers,"Return-Path")
+              console.log(fromMail)
+              let subject = getHeader(data.querySet[i].payload.headers, 'Subject');
+              let date = getHeader(data.querySet[i].payload.headers, 'Date').substring(5,16);
+
+                
       
       
               //To populate the emails.
@@ -237,13 +226,13 @@
               tableRowA.setAttribute('class','tableRow');
               let rowValA = document.createElement('th');
               rowValA.setAttribute('scope','row');
-              rowValA.innerHTML = serialNoA;
+              rowValA.innerHTML = rank;
               let rowValB = document.createElement('td');
-              rowValB.innerHTML = fromA;
+              rowValB.innerHTML = from;
               let rowValC = document.createElement('td');
-              rowValC.innerHTML = subjectA;
+              rowValC.innerHTML = subject;
               let rowValD = document.createElement('td');
-              rowValD.innerHTML = dateA;
+              rowValD.innerHTML = date;
       
               tableRowA.append(rowValA,rowValB,rowValC,rowValD);
               document.getElementById('tableBody').append(tableRowA);
@@ -265,4 +254,5 @@
       }
       
       
+        
         
