@@ -1,3 +1,47 @@
 body{
     background-color: aqua;
 }
+
+.homePage
+{
+    display: inline-block;
+    background-color: sandybrown;
+    border: black 3px solid;
+    border-radius: 10%;
+}
+.inbox
+{
+    margin-left: 10%;
+    margin-right: 10%;
+    padding: 15px;
+    display: inline-block;
+    border: solid 3px black;
+}
+.hidden
+{
+    display: none;
+}
+#heading
+{
+    font-family: 'Times New Roman', Times, serif;
+    display: inline-block;
+    text-align: justify;
+    font-size: 30px;
+    border: rosybrown 3px solid;
+    padding: 10px;
+    margin-left: 20%;
+}
+#inboxDiv
+{
+    display: none;
+}
+#helloP
+{
+    font-size: 25px;
+    color: coral;
+}
+.btns
+{
+    text-align: center;
+    margin-left: 35%;
+}
